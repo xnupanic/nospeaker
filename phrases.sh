@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Play a few sample phrases through the locally built nospeaker binary.
+# Play one randomly selected phrase through the locally built nospeaker binary.
 set -euo pipefail
 
 repo_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -10,6 +10,11 @@ if [[ ! -x "$binary" ]]; then
     exit 1
 fi
 
-"$binary" "I always feel like...somebody's watching meeee"
-"$binary" "I like your hair today."
-"$binary" "This computer will self destruct in 10...9...8...7...6...5...4...3...2....self destruct aborted."
+phrases=(
+    "I always feel like...somebody's watching meeee"
+    "I like your hair today."
+    "This computer will self destruct in 10...9...8...7...6...5...4...3...2....self destruct aborted."
+)
+
+phrase_index=$((RANDOM % ${#phrases[@]}))
+"$binary" "${phrases[$phrase_index]}"
