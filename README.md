@@ -161,10 +161,17 @@ Every time the script runs, it randomly selects one phrase.
 
 `[ install ]`
 
-First, build NO SPEAKER and make sure the executable is in the repository root:
+The prank script works with either installation method from [Section 02](#02--run-it): it prefers a locally built `./nospeaker` in this checkout, and otherwise uses the binary installed by `curl -fsSL a90.com/nospeaker | sh` at `~/.local/bin/nospeaker`.
+
+If you want to build from source, run:
 
 ```sh
 ./build.sh
+```
+
+Make the prank script executable:
+
+```sh
 chmod +x phrases.sh
 ```
 
@@ -200,8 +207,8 @@ rm ~/Library/LaunchAgents/com.xnupanic.nospeaker.phrases.plist
 
 - Your Mac must be awake for scheduled executions.
 - A Force Touch trackpad must be available.
-- The script uses the `nospeaker` binary in the repository root.
-- The launch agent expects the repository to be located at `~/nospeaker`.
+- The script prefers the `nospeaker` binary in the repository root; if it isn't there, it uses `~/.local/bin/nospeaker`.
+- Keep this repository checkout at `~/nospeaker`, as the launch agent uses that path to find `phrases.sh`. The binary itself can be built locally or installed with the Section 02 curl command.
 - The 30-minute interval is managed by macOS `launchd`; exact execution times aren't guaranteed.
 
 **Use responsibly. Your colleagues may start questioning their sanity.**
