@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
-# Play one randomly selected phrase through the locally built nospeaker binary.
+# Play one randomly selected phrase through NO SPEAKER.
 set -euo pipefail
 
 repo_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-binary="$repo_dir/nospeaker"
+local_binary="$repo_dir/nospeaker"
+installed_binary="$HOME/.local/bin/nospeaker"
 
-if [[ ! -x "$binary" ]]; then
-    printf 'Error: %s is missing or not executable. Build it first with ./build.sh.\n' "$binary" >&2
+# Prefer a binary built in this checkout; otherwise use the curl-installed copy.
+if [[ -x "$local_binary" ]]; then
+    binary="$local_binary"
+elif [[ -x "$installed_binary" ]]; then
+    binary="$installed_binary"
+else
+    printf 'Error: NO SPEAKER was not found. Build it with ./build.sh or install it with:\n' >&2
+    printf '  curl -fsSL a90.com/nospeaker | sh\n' >&2
     exit 1
 fi
 
