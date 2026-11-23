@@ -145,6 +145,67 @@ line as it speaks.
 The MultitouchSupport function names were learned from the open-source Tactile project. Everything else was
 measured on a MacBook.
 
+## 07 / prank mode
+
+`[ make your trackpad unpredictable ]`
+
+Your MacBook can now speak at completely unexpected moments. Install a small `launchd` job and let NO SPEAKER deliver occasional messages through your trackpad.
+
+Three phrases are included:
+
+- "I always feel like...somebody's watching meeee"
+- "I like your hair today."
+- "This computer will self destruct in 10...9...8...7...6...5...4...3...2....self destruct aborted."
+
+Every time the script runs, it randomly selects one phrase.
+
+`[ install ]`
+
+First, build NO SPEAKER and make sure the executable is in the repository root:
+
+```sh
+./build.sh
+chmod +x phrases.sh
+```
+
+Install the launch agent:
+
+```sh
+mkdir -p ~/Library/LaunchAgents
+
+cp com.xnupanic.nospeaker.phrases.plist \
+   ~/Library/LaunchAgents/
+
+launchctl bootstrap gui/$(id -u) \
+   ~/Library/LaunchAgents/com.xnupanic.nospeaker.phrases.plist
+```
+
+That's it. Your trackpad will now speak a randomly selected phrase every 30 minutes. It will also speak once when the launch agent is loaded.
+
+`[ stop the madness ]`
+
+Unload the launch agent:
+
+```sh
+launchctl bootout gui/$(id -u)/com.xnupanic.nospeaker.phrases
+```
+
+To permanently disable prank mode, remove the plist:
+
+```sh
+rm ~/Library/LaunchAgents/com.xnupanic.nospeaker.phrases.plist
+```
+
+**A few things to know:**
+
+- Your Mac must be awake for scheduled executions.
+- A Force Touch trackpad must be available.
+- The script uses the `nospeaker` binary in the repository root.
+- The launch agent expects the repository to be located at `~/nospeaker`.
+- The 30-minute interval is managed by macOS `launchd`; exact execution times aren't guaranteed.
+
+**Use responsibly. Your colleagues may start questioning their sanity.**
+
 ```text
 ──────────────────────  thanks for listening  ───────────────────────
 ```
